@@ -3,19 +3,19 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/go-service
-      gitProvider: sdemo_github
+      gitProvider: twgithub
 
   - name: gosvc_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: art
       buildName: svc_build
       buildNumber: 1
 
   - name: gosvc_promoted_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: art
       buildName: svc_build
       buildNumber: 1
 
@@ -23,26 +23,26 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/java-backend
-      gitProvider: sdemo_github
+      gitProvider: twgithub
 
   - name: appl_build_info_output
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: art
       buildName: backend_build
       buildNumber: 1
       
   - name: appl_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: art
       buildName: backend_build
       buildNumber: 1
 
   - name: appl_promoted_build_info
     type: BuildInfo
     configuration:
-      sourceArtifactory: demoArt
+      sourceArtifactory: art
       buildName: backend_build
       buildNumber: 1
 
@@ -50,7 +50,7 @@ resources:
     type: GitRepo
     configuration:
       path: sdemo/vue-frontend
-      gitProvider: sdemo_github
+      gitProvider: twgithub
 
   - name: release_bundle
     type: ReleaseBundle
@@ -97,14 +97,14 @@ pipelines:
           inputResources:
             - name: gosvc_gitRepo
           integrations:
-            - name: demoArt
+            - name: art
 
       - name: push_svc
         type: DockerPush
         configuration:
           targetRepository: docker-local
           integrations:
-            - name: demoArt
+            - name: art
           inputSteps:
             - name: bld_svc
 
@@ -121,7 +121,7 @@ pipelines:
         configuration:
           targetRepository: demo-pipelines
           integrations:
-            - name: demoArt
+            - name: art
           inputResources:
             - name: gosvc_build_info
           outputResources:
@@ -139,7 +139,7 @@ pipelines:
           inputResources:
             - name: be_gitRepo
           integrations:
-            - name: demoArt
+            - name: art
           runtime:
             type: image
             image:
@@ -162,7 +162,7 @@ pipelines:
           inputResources:
             - name: fe_gitRepo
           integrations:
-            - name: demoArt
+            - name: art
 
       - name: pack_frontend
         type: Bash
@@ -170,7 +170,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: demoArt
+            - name: arat
         execution:
           onStart:
             - export tempStateLocation="$step_tmp_dir/npmSourceState"
@@ -186,7 +186,7 @@ pipelines:
           inputSteps:
             - name: pack_frontend
           integrations:
-            - name: demoArt
+            - name: art
         execution:
           onStart:
             - export inputNpmBuildStepName="bld_frontend"
@@ -204,16 +204,16 @@ pipelines:
             - name: bld_backend
             - name: publish_frontend
           integrations:
-            - name: demoArt
+            - name: art
         execution:
           onStart:
             - rm -rf $run_dir/workspace/jfrog
-            - retry_command jfrog rt config --url $int_demoArt_url --user $int_demoArt_user --apikey $int_demoArt_apikey --interactive=false
+            - retry_command jfrog rt config --url $int_art_url --user $int_art_user --apikey $int_art_apikey --interactive=false
             - pushd $res_be_gitRepo_resourcePath
             - add_run_variables buildStepName=${step_name}
             - add_run_variables ${step_name}_buildNumber=${run_number}
             - add_run_variables ${step_name}_buildName=${pipeline_name}
-            - docker build --pull --no-cache -t $dockerImageName:$dockerImageTag --build-arg REGISTRY=${int_demoArt_url} .
+            - docker build --pull --no-cache -t $dockerImageName:$dockerImageTag --build-arg REGISTRY=${int_art_url} .
             - jfrog rt bce $pipeline_name $run_number
             - jfrog rt docker-push 34.74.146.128:8082/docker-local/app:$run_number docker-local --build-name=$pipeline_name --build-number=$run_number
             - add_run_files /tmp/jfrog/. jfrog
@@ -232,7 +232,7 @@ pipelines:
         configuration:
           targetRepository: demo-pipelines
           integrations:
-            - name: demoArt
+            - name: art
           inputResources:
             - name: appl_build_info
           outputResources:
