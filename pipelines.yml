@@ -170,7 +170,7 @@ pipelines:
           inputSteps:
             - name: bld_frontend
           integrations:
-            - name: arat
+            - name: art
         execution:
           onStart:
             - export tempStateLocation="$step_tmp_dir/npmSourceState"
