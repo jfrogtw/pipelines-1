@@ -3,7 +3,7 @@ resources:
     type: GitRepo
     configuration:
       path: jfrogtw/go-service
-      gitProvider: twgithub
+      gitProvider: tw_github
 
   - name: gosvc_build_info
     type: BuildInfo
@@ -23,7 +23,7 @@ resources:
     type: GitRepo
     configuration:
       path: jfrogtw/java-backend
-      gitProvider: twgithub
+      gitProvider: tw_github
 
   - name: appl_build_info_output
     type: BuildInfo
@@ -50,7 +50,7 @@ resources:
     type: GitRepo
     configuration:
       path: jfrogtw/vue-frontend
-      gitProvider: twgithub
+      gitProvider: tw_github
 
   - name: release_bundle
     type: ReleaseBundle
