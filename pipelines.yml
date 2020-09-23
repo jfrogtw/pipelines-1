@@ -84,9 +84,10 @@ pipelines:
       - name: bld_svc
         type: DockerBuild
         configuration:
+          affinityGroup: dbp_group
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: 34.74.146.128:8082/docker-local/gosvc
+          dockerImageName: giant-docker-local.jfrog.io/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo
@@ -96,6 +97,7 @@ pipelines:
       - name: push_svc
         type: DockerPush
         configuration:
+          affinityGroup: dbp_group
           targetRepository: docker-local
           integrations:
             - name: art
