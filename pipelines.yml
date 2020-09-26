@@ -87,7 +87,7 @@ pipelines:
           affinityGroup: dbp_group
           dockerFileLocation: .
           dockerFileName: Dockerfile
-          dockerImageName: demo-docker-local.jfrog-pipelines.com/gosvc
+          dockerImageName: kaloula.jfrog-pipelines.com/docker-local/gosvc
           dockerImageTag: ${run_number}
           inputResources:
             - name: gosvc_gitRepo
